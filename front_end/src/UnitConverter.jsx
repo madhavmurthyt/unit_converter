@@ -24,13 +24,23 @@ export default function UnitConverter() {
     const handleConvert = async(e) => {
         e.preventDefault();
         // Conversion logic placeholder
-         const res = await fetch('http://localhost:3022/convert', {
-            method: 'POST',
-            body: {value, fromUnit, toUnit },
+               console.log(value, fromUnit, toUnit, tabOptions[activeTab].label);
+
+            const res = await fetch('http://localhost:3022/convert', {
+                method: 'POST',
+                body: JSON.stringify(
+                    { 
+                        "value": Number(value), 
+                        "fromUnit": fromUnit, 
+                        "toUnit": toUnit, 
+                        "type": tabOptions[activeTab].label 
+                    }
+                ),
+                headers: { 'Content-Type': 'application/json'}
        });
         const data = await res.json();
-        
-        setResult(`Converted ${value} from ${fromUnit} to ${toUnit}`);
+        setResult("The answer is " + data.result + " " + toUnit);
+       
     };
 
     const { label, units } = tabOptions[activeTab];
